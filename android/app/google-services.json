@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1079909316054",
+    "project_id": "scouting-app-865",
+    "storage_bucket": "scouting-app-865.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079909316054:android:f243073ee20cee816a6077",
+        "android_client_info": {
+          "package_name": "com.example.scouting_app_865"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079909316054-kpvlbv798ptilltt9c39a5dqm6dan5oe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALG8g3I5LRiYeOYy_9i49f4qnNLfhxwps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079909316054-kpvlbv798ptilltt9c39a5dqm6dan5oe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1079909316054-mscdsa2lip724ctlk1f8b223a74o0o42.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.scoutingApp2022"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
