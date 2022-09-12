@@ -15,10 +15,6 @@ dependencies:
     qr_flutter: ^4.0.0
     csv: ^5.0.1
     google_fonts: ^2.3.2
-    dynamic_color: ^0.1.0
-    firebase_core: ^1.16.0
-    firebase_core_web: ^1.6.3
-    material_color_utilities: ^0.1.4
 
 dev_dependencies:
     flutter_test:

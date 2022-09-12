@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../pages/auto_page.dart';
-import '../pages/endgame_page.dart';
-import '../pages/home_page.dart';
-import '../pages/teleop_page.dart';
-import '../pages/qr_page.dart';
-import '../utils/appbar.dart';
-import '../utils/themes.dart';
+import './pages/auto_page.dart';
+import './pages/endgame_page.dart';
+import './pages/home_page.dart';
+import './pages/teleop_page.dart';
+import './pages/qr_page.dart';
+import './utils/appbar.dart';
+import './utils/themes.dart';
 
 void main() async {
   runApp(const MyApp());
