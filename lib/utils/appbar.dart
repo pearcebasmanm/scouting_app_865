@@ -43,7 +43,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return AppBar(
       title: Row(
         children: [
-          const Text("Team Number:"),
+          Text("${MediaQuery.of(context).size.width}Team Number:"),
           const SizedBox(width: 10),
           Container(
             width: 50,

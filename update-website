@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cp -r ./build/web ../scouting_app_865_web

@@ -58,20 +58,29 @@ class _HomePageState extends State<HomePage> {
     return ListView(
       scrollDirection: Axis.vertical,
       children: [
-        CustomButton(
-          text: "Disabled",
-          value: _disabled,
-          onPressed: () => setState(() => _disabled = !_disabled),
-        ),
-        CustomButton(
-          text: "Incapacitated",
-          value: _incapacitated,
-          onPressed: () => setState(() => _incapacitated = !_incapacitated),
-        ),
-        CustomButton(
-          text: "Started Late",
-          value: _late,
-          onPressed: () => setState(() => _late = !_late),
+        Flex(
+          direction: MediaQuery.of(context).size.width >= 1000
+              ? Axis.horizontal
+              : Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            CustomButton(
+              text: "Disabled",
+              value: _disabled,
+              onPressed: () => setState(() => _disabled = !_disabled),
+            ),
+            CustomButton(
+              text: "Incapacitated",
+              value: _incapacitated,
+              onPressed: () => setState(() => _incapacitated = !_incapacitated),
+            ),
+            CustomButton(
+              text: "Started Late",
+              value: _late,
+              onPressed: () => setState(() => _late = !_late),
+            ),
+          ],
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),

@@ -1,6 +1,7 @@
 import "package:csv/csv.dart";
 import "package:flutter/material.dart";
 import "package:qr_flutter/qr_flutter.dart";
+import 'package:scouting_app_865/utils/gsheets_api.dart';
 import "package:shared_preferences/shared_preferences.dart";
 
 class QRPage extends StatefulWidget {
@@ -55,7 +56,6 @@ class _QRPageState extends State<QRPage> {
         }
         csvList[1][csvList[0].indexOf(key)] = value;
       }
-      // print("$key: ${csvList[1][csvList[0].indexOf(key)]}");
     }
 
     // Add info page information to comments.
@@ -65,6 +65,10 @@ class _QRPageState extends State<QRPage> {
     if (preferences.getBool("late") == true) info += "Late | ";
     csvList[1].last = info + csvList[1].last;
 
+    // Add a row to the Google Sheet
+    GSheetsAPI.addRow(csvList[1]);
+
+    // Update QR Code
     setState(() => data = const ListToCsvConverter().convert([csvList[1]]));
   }
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:scouting_app_865/utils/gsheets_api.dart';
 import './pages/auto_page.dart';
 import './pages/endgame_page.dart';
 import './pages/home_page.dart';
@@ -9,6 +10,9 @@ import './utils/appbar.dart';
 import './utils/themes.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await GSheetsAPI.init();
+
   runApp(const MyApp());
 }
 
@@ -21,17 +25,6 @@ class MyApp extends StatelessWidget {
       theme: CustomTheme.theme(Themes.light),
       home: const MyHomePage(),
     );
-    // return FutureBuilder(
-    //   future: getMaterialYouColors(),
-    //   builder: (context, snapshot) {
-    //     print(snapshot.data);
-    //     return MaterialApp(
-    //       debugShowCheckedModeBanner: false,
-    //       theme: CustomTheme.theme(Themes.light),
-    //       home: const MyHomePage(),
-    //     );
-    //   },
-    // );
   }
 }
 
