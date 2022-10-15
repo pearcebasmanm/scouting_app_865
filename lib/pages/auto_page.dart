@@ -40,8 +40,8 @@ class _AutoPageState extends State<AutoPage> {
 
   @override
   void initState() {
-    super.initState();
     _getData();
+    super.initState();
   }
 
   @override

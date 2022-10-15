@@ -32,12 +32,12 @@ class Counter extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: Theme.of(context).textTheme.headline5,
+                style: const TextStyle(fontSize: 28.0),
               ),
               const SizedBox(width: 10),
               Text(
                 '$value',
-                style: Theme.of(context).textTheme.headline4,
+                style: const TextStyle(fontSize: 32.0),
               ),
             ],
           ),

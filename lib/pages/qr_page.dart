@@ -1,13 +1,11 @@
 import "package:csv/csv.dart";
 import "package:flutter/material.dart";
 import "package:qr_flutter/qr_flutter.dart";
-import 'package:scouting_app_865/utils/get_match_data.dart';
-import 'package:scouting_app_865/utils/gsheets_api.dart';
 import "package:shared_preferences/shared_preferences.dart";
 
-class QRPage extends StatefulWidget {
-  // final Function resetParentData;
+import "../utils/get_match_data.dart";
 
+class QRPage extends StatefulWidget {
   const QRPage({Key? key}) : super(key: key);
 
   @override
@@ -15,33 +13,31 @@ class QRPage extends StatefulWidget {
 }
 
 class _QRPageState extends State<QRPage> {
-  String data = "";
+  String matchDataCSV = "";
 
-  // Update QR Code
-  updateQrCode() async {
+  getMatchDataCSV() async {
     final matchData = await getMatchData();
-    setState(() => data = const ListToCsvConverter().convert([matchData]));
+    setState(() {
+      matchDataCSV = const ListToCsvConverter().convert([matchData]);
+    });
   }
 
   @override
   void initState() {
-    updateQrCode();
+    getMatchDataCSV();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      scrollDirection: Axis.vertical,
+    return Flex(
+      direction: Axis.vertical,
       children: [
-        QrImage(data: data),
+        Flexible(child: QrImage(data: matchDataCSV)),
         Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 5,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SelectableText(
-            data,
+            matchDataCSV,
             style: const TextStyle(
               fontSize: 14,
               color: Colors.grey,
@@ -50,11 +46,9 @@ class _QRPageState extends State<QRPage> {
         ),
         TextButton(
           child: const Text("Reset Data"),
-          onPressed: () {
-            // ignore: invalid_use_of_visible_for_testing_member
-            SharedPreferences.setMockInitialValues({});
-            // widget.resetParentData;
-          },
+          onPressed: () =>
+              // ignore: invalid_use_of_visible_for_testing_member
+              SharedPreferences.setMockInitialValues({}),
         )
       ],
     );

@@ -7,11 +7,11 @@ import '../utils/button.dart';
 
 class HomePage extends StatefulWidget {
   final Function qrButtonFunction;
-  final Function timer;
+  final Function startTimer;
 
   const HomePage({
     required this.qrButtonFunction,
-    required this.timer,
+    required this.startTimer,
     Key? key,
   }) : super(key: key);
 
@@ -86,21 +86,27 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: const EdgeInsets.all(5),
           child: ElevatedButton(
-            onPressed: () async => GSheetsAPI.addRow(await getMatchData()),
+            onPressed: () async {
+              _saveData();
+              GSheetsAPI.addRow(await getMatchData());
+            },
             child: const Text("Send Data"),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(5),
           child: ElevatedButton(
-            onPressed: () => widget.qrButtonFunction(),
+            onPressed: () {
+              _saveData();
+              widget.qrButtonFunction();
+            },
             child: const Text("QR Code"),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(5),
           child: ElevatedButton(
-            onPressed: () => widget.timer(),
+            onPressed: () => widget.startTimer(),
             child: const Text("Start/Stop Auto"),
           ),
         ),

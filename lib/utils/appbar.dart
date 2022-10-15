@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:scouting_app_865/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -22,9 +22,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
         () => _teamNumberController.text = preferences.getString("Team") ?? "");
   }
 
-  Future _saveData() async {
+  Future _setData(value) async {
     final preferences = await SharedPreferences.getInstance();
-    preferences.setString("Team", _teamNumberController.text);
+    preferences.setString("Team", value);
   }
 
   @override
@@ -34,59 +34,41 @@ class _CustomAppBarState extends State<CustomAppBar> {
   }
 
   @override
-  void dispose() {
-    _saveData();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return AppBar(
       title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text("Team Number:"),
           const SizedBox(width: 10),
           Container(
-            width: 50,
-            alignment: Alignment.center,
+            width: 47,
+            decoration: BoxDecoration(
+              border: BorderDirectional(
+                bottom: BorderSide(width: 1, color: palette().onPrimary),
+              ),
+            ),
             child: TextField(
               maxLength: 4,
-              keyboardType: TextInputType.number,
               controller: _teamNumberController,
-              onChanged: (_) async {
-                final preferences = await SharedPreferences.getInstance();
-                preferences.setString("Team", _teamNumberController.text);
-              },
-              decoration: const InputDecoration(
-                counterText: "",
-                hintText: "",
-                // suffixIcon: null,
-                isCollapsed: true,
+              onChanged: (value) => _setData(value),
+              style: TextStyle(
+                fontSize: 20,
+                color: palette().onPrimary,
               ),
-              /* Style taken from AppBar (ctrl-click to see source data)
-              - titleTextStyle (10/29)
-              - foregroundColor (which titleTextStyle references) (12/27)
-              */
-              style: Theme.of(context).textTheme.headline6?.copyWith(
-                  color: Theme.of(context).colorScheme.brightness ==
-                          Brightness.dark
-                      ? Theme.of(context).colorScheme.onSurface
-                      : Theme.of(context).colorScheme.onPrimary),
+              decoration: null, // isn't null by default, so don't remove
             ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.clear_rounded),
+            onPressed: () {
+              setState(() => _teamNumberController.text = "");
+              _setData("");
+            },
           ),
         ],
       ),
       centerTitle: true,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.clear_rounded),
-          onPressed: () async {
-            setState(() => _teamNumberController.text = "");
-            final preferences = await SharedPreferences.getInstance();
-            preferences.setString("Team", "");
-          },
-        ),
-      ],
     );
   }
 }

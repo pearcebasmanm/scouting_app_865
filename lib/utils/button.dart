@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:scouting_app_865/utils/theme.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -19,6 +20,15 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color hightlightColor =
+        groupValue != null //depends on button type (?radio:toggle)
+            ? value == groupValue
+                ? palette().primary
+                : Theme.of(context).disabledColor
+            : value
+                ? palette().primary
+                : Theme.of(context).disabledColor;
+
     return GestureDetector(
       onTap: () {
         groupValue != null ? onPressed(value) : onPressed();
@@ -29,17 +39,11 @@ class CustomButton extends StatelessWidget {
         padding: EdgeInsets.all(5),
         margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.inversePrimary,
+          color: palette().background,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             width: 2,
-            color: groupValue != null //depends on button type (?radio:toggle)
-                ? value == groupValue
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).disabledColor
-                : value
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).disabledColor,
+            color: hightlightColor,
           ),
         ),
         child: Center(
@@ -47,13 +51,7 @@ class CustomButton extends StatelessWidget {
             text,
             style: TextStyle(
               fontSize: 50,
-              color: groupValue != null
-                  ? value == groupValue
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).disabledColor
-                  : value
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).disabledColor,
+              color: hightlightColor,
             ),
           ),
         ),

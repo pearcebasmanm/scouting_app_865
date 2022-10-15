@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:scouting_app_865/utils/gsheets_api.dart';
+import './utils/gsheets_api.dart';
 import './pages/auto_page.dart';
 import './pages/endgame_page.dart';
 import './pages/home_page.dart';
 import './pages/teleop_page.dart';
 import './pages/qr_page.dart';
 import './utils/appbar.dart';
-import './utils/themes.dart';
+import 'utils/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: CustomTheme.theme(Themes.light),
+      // theme: ThemeData.from(colorScheme: const ColorScheme.light()),
+      theme: theme(),
       home: const MyHomePage(),
     );
   }
@@ -36,51 +37,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _showTimer = false;
+  bool _timerIsVisible = false;
   int _time = 0;
-  int _timers = 0;
   final _pageController = PageController();
   int _selectedPage = 0;
 
-  void _timer() async {
-    if (_timers > 0) {
-      setState(() => _showTimer = false);
+  void _startTimer() async {
+    if (_timerIsVisible) {
+      setState(() => _timerIsVisible = false);
       return;
     }
 
-    // start of auto
-    setState(() {
-      _timers += 1;
-      _navigate(1);
-      _showTimer = true;
-    });
+    // Move to Auto tab and show the timer
+    _navigate(1);
+    setState(() => _timerIsVisible = true);
 
     for (int i = 150; i > 0; i--) {
-      if (_showTimer == false || _timers > 1) {
-        setState(() {
-          _timers -= 1;
-        });
-        return;
-      }
-      setState(() {
-        _time = i % 135;
-        if (i == 135) _navigate(2);
-      });
+      if (!_timerIsVisible) return;
+
+      setState(() => _time = i % 135);
+      // Move to Teleop tab at the 15-second mark (150 - 15 = 135)
+      if (i == 135) _navigate(2);
+
       await Future.delayed(const Duration(seconds: 1));
     }
 
-    setState(() {
-      _timers -= 1;
-      _navigate(3);
-      _showTimer = false;
-    });
+    // Move to Endgame tab and hide timer
+    _navigate(3);
+    setState(() => _timerIsVisible = false);
   }
 
   // Page Navigation
-  late final List<Widget> _pages = <Widget>[
+  late final List<Widget> _pages = [
     HomePage(
       qrButtonFunction: () => _navigate(4),
-      timer: _timer,
+      startTimer: _startTimer,
     ),
     const AutoPage(),
     const TeleopPage(),
@@ -104,35 +95,34 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false, //mobile keyboard appears over elements
         appBar: const CustomAppBar(),
-        bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              buildTabItem(index: 0, icon: Icons.home, label: "Main"),
-              buildTabItem(index: 1, icon: Icons.computer, label: "Auto"),
-              if (_showTimer)
-                const SizedBox(
-                  width: 30,
-                ),
-              buildTabItem(
-                  index: 2, icon: Icons.videogame_asset, label: "Teleop"),
-              buildTabItem(index: 3, icon: Icons.timer, label: "Endgame"),
-            ],
-          ),
-        ),
         body: Padding(
           padding: const EdgeInsets.all(5),
+          // PageView makes tabs swipable on mobile app
           child: PageView(
             controller: _pageController,
             children: _pages,
             onPageChanged: (i) => setState(() => _selectedPage = i),
           ),
         ),
+        bottomNavigationBar: BottomAppBar(
+          color: palette().primary,
+          shape: const CircularNotchedRectangle(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              buildTabItem(index: 0, icon: Icons.home, label: "Main"),
+              buildTabItem(index: 1, icon: Icons.computer, label: "Auto"),
+              if (_timerIsVisible) const SizedBox(width: 30),
+              buildTabItem(
+                  index: 2, icon: Icons.videogame_asset, label: "Teleop"),
+              buildTabItem(index: 3, icon: Icons.timer, label: "Endgame"),
+            ],
+          ),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: _showTimer
+        floatingActionButton: _timerIsVisible
             ? FloatingActionButton(
                 onPressed: null,
                 child: FittedBox(
@@ -141,9 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.all(15),
                     child: Text(
                       "$_time",
-                      style: const TextStyle(
-                        fontSize: 100, // shrinks to size
-                      ),
+                      style: const TextStyle(fontSize: 100), // shrinks to size
                     ),
                   ),
                 ),
@@ -153,37 +141,27 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget buildTabItem(
-      {required int index, required IconData icon, required String label}) {
-    Color? barItemColor = _selectedPage == index
-        ? Theme.of(context).colorScheme.inversePrimary
-        : Color.lerp(Theme.of(context).colorScheme.primary,
-            Theme.of(context).colorScheme.inversePrimary, 0.5);
+  Widget buildTabItem({
+    required int index,
+    required IconData icon,
+    required String label,
+  }) {
+    // Contrasting color when the tab is selected, otherwise the secondary color
+    Color barItemColor =
+        _selectedPage == index ? palette().onPrimary : palette().secondary;
 
     return MaterialButton(
       onPressed: () => _navigate(index),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: barItemColor,
-          ),
-          Text(
-            label,
-            style: TextStyle(color: barItemColor),
-          )
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: barItemColor),
+            Text(label, style: TextStyle(color: barItemColor))
+          ],
+        ),
       ),
     );
-
-    // IconButton(
-    //   icon: icon,
-    //   onPressed: () => _navigate(index),
-    //   color: _selectedPage == index
-    //       ? Theme.of(context).colorScheme.inversePrimary
-    //       : Color.lerp(Theme.of(context).colorScheme.primary,
-    //           Theme.of(context).colorScheme.inversePrimary, 0.5),
-    // );
   }
 }
