@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,7 +44,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return AppBar(
       title: Row(
         children: [
-          Text("${MediaQuery.of(context).size.width}Team Number:"),
+          const Text("Team Number:"),
           const SizedBox(width: 10),
           Container(
             width: 50,

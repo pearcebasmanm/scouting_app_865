@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scouting_app_865/utils/get_match_data.dart';
+import 'package:scouting_app_865/utils/gsheets_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/button.dart';
@@ -58,29 +60,20 @@ class _HomePageState extends State<HomePage> {
     return ListView(
       scrollDirection: Axis.vertical,
       children: [
-        Flex(
-          direction: MediaQuery.of(context).size.width >= 1000
-              ? Axis.horizontal
-              : Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            CustomButton(
-              text: "Disabled",
-              value: _disabled,
-              onPressed: () => setState(() => _disabled = !_disabled),
-            ),
-            CustomButton(
-              text: "Incapacitated",
-              value: _incapacitated,
-              onPressed: () => setState(() => _incapacitated = !_incapacitated),
-            ),
-            CustomButton(
-              text: "Started Late",
-              value: _late,
-              onPressed: () => setState(() => _late = !_late),
-            ),
-          ],
+        CustomButton(
+          text: "Disabled",
+          value: _disabled,
+          onPressed: () => setState(() => _disabled = !_disabled),
+        ),
+        CustomButton(
+          text: "Incapacitated",
+          value: _incapacitated,
+          onPressed: () => setState(() => _incapacitated = !_incapacitated),
+        ),
+        CustomButton(
+          text: "Started Late",
+          value: _late,
+          onPressed: () => setState(() => _late = !_late),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -90,6 +83,13 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.all(5),
+          child: ElevatedButton(
+            onPressed: () async => GSheetsAPI.addRow(await getMatchData()),
+            child: const Text("Send Data"),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(5),
           child: ElevatedButton(

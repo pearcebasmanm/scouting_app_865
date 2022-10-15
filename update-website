@@ -1,7 +1,0 @@
-#!/bin/bash
-
-cp -r ./build/web/* ../scouting_app_865_web
-
-cd ../scouting_app_865_web
-git commit -a -m "update"
-echo "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" | echo "Bolt7" | git push

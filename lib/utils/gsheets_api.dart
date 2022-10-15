@@ -23,13 +23,10 @@ class GSheetsAPI {
   static Future init() async {
     final spreadsheet = await _gsheets.spreadsheet(_spreadsheetId);
     _matchesSheet = await _getWorkSheet(spreadsheet, title: "Sheet1");
-
-    // final firstRow = ["Team #", "Misc"];
-    // _matchesSheet!.values.insertRow(1, firstRow);
   }
 
-  static Future addRow(matchData) async {
-    if (_matchesSheet == null) return;
+  static Future addRow(List<dynamic> matchData) async {
+    if (_matchesSheet == null || matchData.isEmpty) return;
     _matchesSheet!.values.appendRow(matchData);
   }
 
