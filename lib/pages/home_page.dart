@@ -45,8 +45,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    super.initState();
     _getData();
+    super.initState();
   }
 
   @override
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: TextField(
+          child: TextFormField(
             controller: _commentController,
             decoration: const InputDecoration(labelText: "Comments"),
           ),

@@ -40,23 +40,31 @@ class _CustomAppBarState extends State<CustomAppBar> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text("Team Number:"),
-          const SizedBox(width: 10),
-          Container(
-            width: 47,
-            decoration: BoxDecoration(
-              border: BorderDirectional(
-                bottom: BorderSide(width: 1, color: palette().onPrimary),
-              ),
-            ),
-            child: TextField(
+          const SizedBox(width: 5),
+          SizedBox(
+            width: 54,
+            height: 30,
+            child: TextFormField(
               maxLength: 4,
+              keyboardType: TextInputType.number, // brings up numpad on mobile
               controller: _teamNumberController,
               onChanged: (value) => _setData(value),
               style: TextStyle(
                 fontSize: 20,
                 color: palette().onPrimary,
               ),
-              decoration: null, // isn't null by default, so don't remove
+              textAlignVertical: TextAlignVertical.bottom,
+              decoration: const InputDecoration(
+                isDense: true, // reduces vertical space
+                contentPadding: EdgeInsets.all(3.0), // reduce vertical space
+                counterText: "", // hides a character counter which takes space
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+              ),
             ),
           ),
           IconButton(
