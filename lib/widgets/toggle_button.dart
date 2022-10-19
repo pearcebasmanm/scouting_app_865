@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scouting_app_865/utils/theme.dart';
 
-class CustomButton extends StatelessWidget {
+class ToggleButton extends StatelessWidget {
   final String text;
   final Function onPressed;
   final Enum? groupValue;
   final dynamic value; //bool or enum of the same type as groupValue
 
-  const CustomButton({
+  const ToggleButton({
     required this.text,
     required this.onPressed,
     required this.value,

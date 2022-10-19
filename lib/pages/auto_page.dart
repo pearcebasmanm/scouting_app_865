@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utils/counter.dart';
-import '../utils/button.dart';
+import '../widgets/counter.dart';
+import '../widgets/toggle_button.dart';
 
 class AutoPage extends StatefulWidget {
   const AutoPage({Key? key}) : super(key: key);
@@ -55,7 +55,7 @@ class _AutoPageState extends State<AutoPage> {
     return Flex(
       direction: Axis.vertical,
       children: [
-        CustomButton(
+        ToggleButton(
           text: "Taxi",
           value: _taxi,
           onPressed: () => setState(() => _taxi = !_taxi),

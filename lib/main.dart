@@ -6,12 +6,12 @@ import './pages/endgame_page.dart';
 import './pages/home_page.dart';
 import './pages/teleop_page.dart';
 import './pages/qr_page.dart';
-import './utils/appbar.dart';
+import 'widgets/appbar.dart';
 import 'utils/theme.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await GSheetsAPI.init();
+  GSheetsAPI.init();
 
   runApp(const MyApp());
 }

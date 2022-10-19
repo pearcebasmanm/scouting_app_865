@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utils/button.dart';
+import '../widgets/toggle_button.dart';
 
 enum Rung { none, low, mid, high, traversal }
 
@@ -69,7 +69,7 @@ class _EndgamePageState extends State<EndgamePage> {
           children: [
             ...Rung.values.map((rung) {
               return Expanded(
-                child: CustomButton(
+                child: ToggleButton(
                   text: rung.name[0].toUpperCase() + rung.name.substring(1),
                   value: rung,
                   groupValue: _rung,

@@ -1,9 +1,13 @@
+import 'dart:html';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:scouting_app_865/utils/get_match_data.dart';
-import 'package:scouting_app_865/utils/gsheets_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utils/button.dart';
+import '../utils/get_match_data.dart';
+import '../utils/gsheets_api.dart';
+import '../widgets/action_button.dart';
+import '../widgets/toggle_button.dart';
 
 class HomePage extends StatefulWidget {
   final Function qrButtonFunction;
@@ -60,54 +64,55 @@ class _HomePageState extends State<HomePage> {
     return ListView(
       scrollDirection: Axis.vertical,
       children: [
-        CustomButton(
+        ToggleButton(
           text: "Disabled",
           value: _disabled,
           onPressed: () => setState(() => _disabled = !_disabled),
         ),
-        CustomButton(
+        ToggleButton(
           text: "Incapacitated",
           value: _incapacitated,
           onPressed: () => setState(() => _incapacitated = !_incapacitated),
         ),
-        CustomButton(
+        ToggleButton(
           text: "Started Late",
           value: _late,
           onPressed: () => setState(() => _late = !_late),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: TextFormField(
-            controller: _commentController,
-            decoration: const InputDecoration(labelText: "Comments"),
-          ),
+        ActionButton(
+          onPressed: () async {
+            _saveData();
+            GSheetsAPI.addRow(await getMatchData());
+          },
+          child: const Text("Send Data"),
         ),
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.all(5),
-          child: ElevatedButton(
-            onPressed: () async {
-              _saveData();
-              GSheetsAPI.addRow(await getMatchData());
-            },
-            child: const Text("Send Data"),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(5),
-          child: ElevatedButton(
+        if (!kIsWeb)
+          ActionButton(
             onPressed: () {
               _saveData();
               widget.qrButtonFunction();
             },
             child: const Text("QR Code"),
           ),
+        ActionButton(
+          child: const Text("Reset Data"),
+          onPressed: () {
+            _saveData();
+            // ignore: invalid_use_of_visible_for_testing_member
+            SharedPreferences.setMockInitialValues({});
+            _getData();
+          },
+        ),
+        ActionButton(
+          onPressed: () => widget.startTimer(),
+          child: const Text("Start/Stop Auto"),
         ),
         Padding(
-          padding: const EdgeInsets.all(5),
-          child: ElevatedButton(
-            onPressed: () => widget.startTimer(),
-            child: const Text("Start/Stop Auto"),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: TextFormField(
+            controller: _commentController,
+            decoration: const InputDecoration(labelText: "Comments"),
+            // maxLines: 10,
           ),
         ),
       ],
